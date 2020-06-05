@@ -1,0 +1,75 @@
+启动服务：直接运行 back_server.py 即可，IP为localhost，端口8010
+
+所需第三方库：tornado，hashlib
+
+local_data 为简易文档数据库。一共四位用户，用户名从user1至user4，user4为管理员用户，可修改其他用户权限。
+自左至右开始分别为：主键，用户名，密码，权限，面试状态，token，无用占位符。
+
+接口列表:
+
+customer_login, 路由地址 localhost:8010/login，
+入参{
+	"user_name": "user1",
+	"pwd": "123"
+}，
+正确出参{
+    "code": 200,
+    "msg": "用户登陆成功"
+}，
+错误出参{
+    "code": 400,
+    "msg": "用户名或密码错误"
+}
+
+
+customer_config，路由地址 localhost:8010/config，
+该接口可以修改用户自己的面试状态，T为在面试，F为未在面试。
+入参{
+	"user_name": "user4",
+	"user_interview": "F"
+},
+正确出参{
+    "code": 200,
+    "msg": "用户修改成功"
+},
+错误出参{
+    "code": 400,
+    "msg": "未检测到用户名称"
+}
+
+
+interview_management，路由地址 localhost:8010/management，
+管理员用户（user4）可以修改其他用户的权限。
+入参{
+	"user_name": "user4",
+	"aid_user_name": "user1",
+	"user_auth": "admin"
+}，
+出参{
+    "code": 200,
+    "msg": "用户修改成功"
+}，
+错误出参{
+    "code": 400,
+    "msg": "用户权限不足，无法修改"
+}
+
+
+interview_status，路由地址 localhost:8010/status，
+用户可以查询到自己的面试状态。
+入参{
+	"user_name": "user2"
+}，
+正确出参{
+    "code": 200,
+    "msg": "用户查询成功",
+    "data": [
+        {
+            "status": "T"
+        }
+    ]
+}，
+错误出参{
+    "code": 400,
+    "msg": "用户权限不足，无法修改"
+}
